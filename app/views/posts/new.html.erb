@@ -1,0 +1,68 @@
+<script>
+if (document.URL.match(/new/)){
+  document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('post_image').addEventListener('change', (e) =>{
+
+      const createImageHTML = (blob) => {  
+          const imageElement = document.getElementById('new-image'); 
+          const blobImage = document.createElement('img'); 
+          blobImage.setAttribute('class', 'new-img') 
+          blobImage.setAttribute('src', blob); 
+          imageElement.appendChild(blobImage);
+      }; 
+
+      const file = e.target.files[0];  
+      const blob = window.URL.createObjectURL(file); 
+      createImageHTML(blob);
+  });
+  });
+}
+</script>
+
+
+<h1>(自分の名前)</h1>
+<h3>新規投稿ページ</h3>
+<%= form_for @post do |f| %>
+
+データ型がstringで自由記述の入力フォーム
+
+<div class="field">
+    <%= f.label :present %>
+    <%= f.text_field :present, :size => 30 %>
+</div>
+
+<div class="field">
+    <%= f.label :relationship  %>
+    <%= f.select :relationship, 
+    [["友人", "友人"], 
+    ["恋人", "恋人"], 
+    ["親", "親"], 
+    ["兄弟", "兄弟"],
+    ["その他", "その他"]],  include_blank: "選択して下さい" %>
+</div>
+
+<div class="field">
+    <%= f.label :sex  %>
+    <%= f.select :sex, 
+    [["男性", "男性"], 
+    ["女性", "女性"], 
+    ["その他", "その他"]], include_blank: "選択して下さい" %>
+</div>
+
+  <div class="field">
+    <%= f.label :body  %>
+    <%= f.text_area :body, :size => "30x2" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :image %>
+    <%= f.file_field :image %>
+  </div>
+
+  <div id="new-image"></div>
+
+  <%= f.submit "投稿する" %>
+<% end %>
+
+<%= link_to "一覧に戻る", posts_index_path %>
+
